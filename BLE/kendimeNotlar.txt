@@ -1,0 +1,15 @@
+Platform : Raspbian (Bullseye)
+
+Temp Pal BLE cihaza terminal üzerinden bağlanma ve bildirim alma
+
+- Yeni terminal aç
+- bluetoothctl
+- scan on
+- connect xx:xx:xx:xx:xx:xx  (Device Mac Address)
+- menu gatt
+- list-attributes 
+	> Listelenen servislerden bizim kullanıcağımızı bul
+	> Temp Pal için /org/bluez/hci0/dev_50_F1_4A_C7_AE_32/service0019/char002c
+	
+- select-attribute /org/bluez/hci0/dev_50_F1_4A_C7_AE_32/service0019/char002c
+- notify on
