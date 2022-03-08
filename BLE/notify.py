@@ -1,5 +1,4 @@
 from bluepy import btle
-import struct
 
 class MyDelegate(btle.DefaultDelegate):
     def __init__(self,params):
@@ -9,7 +8,7 @@ class MyDelegate(btle.DefaultDelegate):
         print("handling notification...")
         print(self)
         print(cHandle)
-        print(struct.unpack("b",data))
+        print(data)
 
 p = btle.Peripheral('50:F1:4A:C7:AE:32')
 p.setDelegate(MyDelegate(0))

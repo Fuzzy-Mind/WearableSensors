@@ -7,30 +7,29 @@ class MyDelegate(btle.DefaultDelegate):
     def handleNotification(self, cHandle, data):
         print("A notification was received: %s" %data)
         print(bytes(data))
-        temp = (data[0]<<8)+data[1]
-        vbat = (data[2]<<8)+data[3]
-        print(temp)
-        print(vbat)
+        vbat = (data[0]<<8)+data[1]	# First two bytes battery voltage
+        temp = (data[2]<<8)+data[3]	# Second two bytes temperature value
+        print(vbat/1000.000)
+        print(temp/100.00)
         
 print("ASD")
 
 
-p = btle.Peripheral('50:F1:4A:C7:AE:32')
+
+p = btle.Peripheral('50:F1:4A:C7:AE:32') # Temp Pal MAC Address
 p.setDelegate( MyDelegate() )
 
-print("qwe")
-
-print("Device services list:")
+'''print("Device services list:")
 for svc in p.services:
-	print(str(svc))
+	print(str(svc))'''
 
 
 # Setup to turn notifications on, e.g.
-svc = p.getServiceByUUID('c050')
-ch = svc.getCharacteristics('c05a')[0]
+svc = p.getServiceByUUID('c050')		# Temp Pal Temperature & Battery Service UUID
+ch = svc.getCharacteristics('c05a')[0]	# Temp Pal Temperature & Battery Characteristic UUID
 print(ch.valHandle)
 
-p.writeCharacteristic(ch.valHandle+1, b'\x01\x00')
+p.writeCharacteristic(ch.valHandle+1, b'\x01\x00') # To Enable Notifications
 
 while True:
     if p.waitForNotifications(1.0):
